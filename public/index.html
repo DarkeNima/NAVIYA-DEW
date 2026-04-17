@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Naviya API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white flex items-center justify-center h-screen">
+    <div class="bg-slate-800 p-8 rounded-xl shadow-lg w-96">
+        <h2 class="text-2xl mb-4 font-bold text-blue-500">Naviya API Login</h2>
+        <form action="/auth/login" method="POST" class="space-y-4">
+            <input type="email" name="email" placeholder="Email" class="w-full p-2 rounded bg-slate-700">
+            <input type="password" name="password" placeholder="Password" class="w-full p-2 rounded bg-slate-700">
+            <button class="w-full bg-blue-600 p-2 rounded">Login</button>
+        </form>
+        <hr class="my-4 border-slate-600">
+        <h2 class="text-xl mb-2">Sign Up</h2>
+        <form action="/auth/signup" method="POST" class="space-y-4">
+            <input type="text" name="name" placeholder="Name" class="w-full p-2 rounded bg-slate-700">
+            <input type="email" name="email" placeholder="Email" class="w-full p-2 rounded bg-slate-700">
+            <input type="password" name="password" placeholder="Password" class="w-full p-2 rounded bg-slate-700">
+            <button class="w-full bg-green-600 p-2 rounded">Create Account</button>
+        </form>
+    </div>
+</body>
+</html>

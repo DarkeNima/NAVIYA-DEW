@@ -7,11 +7,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { background: #0f172a; overflow: hidden; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .hidden-form { display: none; }
-        .fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        /* ලස්සන Moving Gradient පසුබිමක් */
+body {
+    background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e1b4b);
+    background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+    height: 100vh;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism Card එක තවත් පැහැදිලි කිරීමට */
+.glass {
+    background: rgba(255, 255, 255, 0.05); /* ඉතාමත් විනිවිද පෙනෙන */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8); /* තද හෙවනැල්ලක් */
+    border: 1px solid rgba(255, 255, 255, 0.15); /* සිහින් බෝඩරය */
+}
+
     </style>
 </head>
 <body class="flex items-center justify-center h-screen text-slate-200">

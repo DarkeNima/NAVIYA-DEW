@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaviyaDew | Developer Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #020617; color: #e2e8f0; margin: 0; overflow-x: hidden; }
+        .glass { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .sidebar { height: 100vh; width: 260px; position: fixed; left: 0; top: 0; border-right: 1px solid rgba(255, 255, 255, 0.05); }
+        .content { margin-left: 260px; padding: 40px; }
+        .api-key-box { font-family: 'JetBrains Mono', monospace; background: #0f172a; border: 1px dashed #3b82f6; }
+        .nav-link:hover { background: rgba(59, 130, 246, 0.1); color: #60a5fa; }
+        .dev-tag { background: linear-gradient(90deg, #3b82f6, #8b5cf6); padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+        
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .content { margin-left: 0; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar glass flex flex-col p-6">
+        <div class="mb-10">
+            <h1 class="text-2xl font-bold text-white tracking-tight">Naviya<span class="text-blue-500">Dew</span></h1>
+            <span class="text-[10px] text-slate-500 tracking-widest uppercase">Developer Hub v1.0</span>
+        </div>
+
+        <nav class="flex-1 space-y-2">
+            <a href="#" class="nav-link flex items-center gap-3 p-3 rounded-xl transition text-slate-400">
+                <i class="fas fa-th-large"></i> Overview
+            </a>
+            <a href="#" class="nav-link flex items-center gap-3 p-3 rounded-xl transition text-slate-400">
+                <i class="fas fa-code"></i> API Documentation
+            </a>
+            <a href="#" class="nav-link flex items-center gap-3 p-3 rounded-xl transition text-slate-400">
+                <i class="fas fa-box-open"></i> My Projects (Mods)
+            </a>
+            <a href="#" class="nav-link flex items-center gap-3 p-3 rounded-xl transition text-slate-400">
+                <i class="fas fa-terminal"></i> Debugger
+            </a>
+        </nav>
+
+        <div class="mt-auto pt-6 border-t border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center font-bold text-white">N</div>
+                <div>
+                    <p class="text-sm font-semibold text-white">Navidu</p>
+                    <p class="text-[10px] text-slate-500">Lead Developer</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h2 class="text-3xl font-bold text-white">Yo, Welcome Back! 🚀</h2>
+                <p class="text-slate-400">Managing your API ecosystem from Horana, SL.</p>
+            </div>
+            <button class="bg-red-500/10 text-red-500 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-500/20 transition">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="md:col-span-2 glass p-8 rounded-3xl">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Your Production Key</h3>
+                        <p class="text-sm text-slate-400">Use this to authenticate your requests.</p>
+                    </div>
+                    <span class="dev-tag">Active</span>
+                </div>
+                <div class="api-key-box p-4 rounded-xl flex justify-between items-center">
+                    <span id="apiKey" class="text-blue-400 break-all mr-4">nv_live_8923hds9238hds923hds</span>
+                    <button onclick="copyKey()" class="text-slate-500 hover:text-white transition">
+                        <i class="fas fa-copy text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass p-8 rounded-3xl flex flex-col justify-center items-center text-center">
+                <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-bolt text-blue-500 text-2xl"></i>
+                </div>
+                <h4 class="text-2xl font-bold text-white">99.9%</h4>
+                <p class="text-slate-500 text-sm">Server Uptime</p>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-semibold text-white mb-6">System Logs</h3>
+        <div class="glass rounded-3xl overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-800/50 text-slate-400 text-xs uppercase">
+                    <tr>
+                        <th class="p-4">Action</th>
+                        <th class="p-4">Status</th>
+                        <th class="p-4">Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm text-slate-300">
+                    <tr class="border-b border-slate-800/50">
+                        <td class="p-4">Login Successful</td>
+                        <td class="p-4"><span class="text-green-500">● Success</span></td>
+                        <td class="p-4">Just now</td>
+                    </tr>
+                    <tr class="border-b border-slate-800/50">
+                        <td class="p-4">API Key Generated</td>
+                        <td class="p-4"><span class="text-blue-500">● Info</span></td>
+                        <td class="p-4">2 hours ago</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer class="mt-20 text-center text-slate-600 text-sm">
+            <p>© 2026 <span class="text-slate-400">NaviyaDew Ecosystem</span>. Designed & Developed by Naviya.</p>
+            <div class="flex justify-center gap-6 mt-4">
+                <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-telegram"></i></a>
+                <a href="#" class="hover:text-white transition"><i class="fab fa-github"></i></a>
+                <a href="#" class="hover:text-red-400 transition"><i class="fab fa-youtube"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function copyKey() {
+            const key = document.getElementById('apiKey').innerText;
+            navigator.clipboard.writeText(key);
+            alert("API Key copied to clipboard! Keep it secret. 🔒");
+        }
+    </script>
+</body>
+</html>

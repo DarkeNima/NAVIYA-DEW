@@ -5,6 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NaviyaDew | Developer Console</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    // URL එකෙන් දත්ත ටික ගන්නවා
+    const urlParams = new URLSearchParams(window.location.search);
+    const userName = urlParams.get('name') || 'Developer';
+    const apiKey = urlParams.get('key') || 'No Key Found';
+
+    // පේජ් එකේ අදාළ තැන්වලට දත්ත දානවා
+    document.getElementById('apiKey').innerText = apiKey;
+    document.querySelector('h2').innerText = `Yo, Welcome Back, ${userName}! 🚀`;
+    document.querySelector('.sidebar p.text-sm').innerText = userName;
+
+    function copyKey() {
+        const key = document.getElementById('apiKey').innerText;
+        navigator.clipboard.writeText(key);
+        alert("API Key copied to clipboard! Keep it secret. 🔒");
+    }
+
+    function logout() {
+        window.location.href = '/'; // ආපහු ලොගින් පේජ් එකට
+    }
+</script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     

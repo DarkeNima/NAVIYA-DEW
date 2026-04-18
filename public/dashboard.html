@@ -16,7 +16,22 @@
         .api-key-box { font-family: 'JetBrains Mono', monospace; background: #0f172a; border: 1px dashed #3b82f6; }
         .nav-link:hover { background: rgba(59, 130, 246, 0.1); color: #60a5fa; }
         .dev-tag { background: linear-gradient(90deg, #3b82f6, #8b5cf6); padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-        
+        @media (max-width: 768px) {
+    .sidebar { 
+        display: flex !important; 
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        z-index: 100;
+    }
+    /* Sidebar එක open වුණාම පෙන්වන class එක */
+    .sidebar.open {
+        transform: translateX(0);
+    }
+}
+
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .content { margin-left: 0; padding: 20px; }
@@ -58,6 +73,22 @@
     </div>
 
     <div class="content">
+        <button onclick="toggleSidebar()" class="fixed top-5 left-5 z-50 md:hidden bg-blue-600 p-3 rounded-xl text-white shadow-lg">
+    <i class="fas fa-bars text-xl"></i>
+</button>
+
+<div id="sidebar" class="sidebar glass flex flex-col p-6 transition-all duration-300 -translate-x-full md:translate-x-0 z-40">
+    <div class="mb-10 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-bold text-white tracking-tight">Naviya<span class="text-blue-500">Dew</span></h1>
+            <span class="text-[10px] text-slate-500 tracking-widest uppercase">Developer Hub v1.0</span>
+        </div>
+        <button onclick="toggleSidebar()" class="md:hidden text-slate-400">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+    </div>
+    </div>
+
         <header class="flex justify-between items-center mb-10">
             <div>
                 <h2 id="welcomeText" class="text-3xl font-bold text-white">Yo, Welcome Back! 🚀</h2>

@@ -1,3 +1,11 @@
+/* * -----------------------------------------------------------
+ * PROJECT      : NaviyaDew API Ecosystem
+ * DEVELOPER    : Nimsara Navidu (Naviya)
+ * VERSION      : 1.0.5
+ * STATUS       : Production Ready | Horana, SL
+ * -----------------------------------------------------------
+ */
+
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -12,10 +20,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 
-// MongoDB Connection
+// MongoDB Connection with Developer Branding
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("Database Connected Successfully"))
-    .catch(err => console.log(err));
+    .then(() => {
+        console.log("=======================================");
+        console.log("   NAVIYADEW API SERVER IS ACTIVE      ");
+        console.log("   Developed by: Naviya (Horana)       ");
+        console.log("   Database Connection: SECURED        ");
+        console.log("=======================================");
+    })
+    .catch(err => console.log("DB Connection Error: ", err));
 
 // Nodemailer Setup
 const transporter = nodemailer.createTransport({
@@ -26,22 +40,21 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// තාවකාලිකව OTP තැන්පත් කිරීමට
 let tempUsers = {};
 
-// 1. මුල් පිටුව
+// 1. Root Route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-// 2. Sign Up - OTP එකක් යැවීම
+// 2. Sign Up - OTP with Premium UI
 app.post('/auth/signup', async (req, res) => {
     const { name, email, password } = req.body;
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) return res.send("Email already registered!");
 
-        const otp = Math.floor(100000 + Math.random() * 900000); // 6 Digit OTP
+        const otp = Math.floor(100000 + Math.random() * 900000);
         tempUsers[email] = { name, email, password, otp };
 
         const mailOptions = {
@@ -49,11 +62,13 @@ app.post('/auth/signup', async (req, res) => {
             to: email,
             subject: 'Account Verification Code',
             html: `
-                <div style="font-family: sans-serif; border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
-                    <h2 style="color: #3b82f6;">Welcome to NaviyaDew API</h2>
-                    <p>ඔබේ ගිණුම තහවුරු කිරීමට පහත කේතය භාවිතා කරන්න:</p>
-                    <h1 style="letter-spacing: 5px; color: #1e293b; background: #f1f5f9; padding: 10px; display: inline-block;">${otp}</h1>
-                    <p style="font-size: 12px; color: #64748b; margin-top: 20px;">මෙය ඔබ ඉල්ලූ කේතයක් නොවේ නම් කරුණාකර මෙම පණිවිඩය නොසලකා හරින්න.</p>
+                <div style="font-family: sans-serif; background: #0f172a; padding: 40px; color: white; border-radius: 20px; text-align: center;">
+                    <h1 style="color: #3b82f6; font-size: 32px;">NaviyaDew API</h1>
+                    <p style="font-size: 18px; color: #94a3b8;">Welcome! Here is your access code:</p>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; display: inline-block; border-radius: 10px; border: 1px solid #3b82f6;">
+                        <h1 style="letter-spacing: 10px; margin: 0; color: #60a5fa;">${otp}</h1>
+                    </div>
+                    <p style="font-size: 12px; color: #64748b; margin-top: 30px;">If you didn't request this, just ignore it.</p>
                 </div>
             `
         };
@@ -61,23 +76,43 @@ app.post('/auth/signup', async (req, res) => {
         transporter.sendMail(mailOptions, (err) => {
             if (err) return res.send("Email sending failed: " + err.message);
             
-            // OTP එක ඇතුළත් කරන UI එක
+            // Premium Glassmorphism OTP Verification UI
             res.send(`
-                <body style="background:#0f172a; color:white; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
-                    <form action="/auth/verify" method="POST" style="background:#1e293b; padding:2rem; border-radius:15px; text-align:center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 320px;">
-                        <h2 style="color:#3b82f6;">OTP Verification</h2>
-                        <p style="color:#94a3b8; font-size:14px;">We sent a code to <b>${email}</b></p>
-                        <input type="hidden" name="email" value="${email}">
-                        <input type="text" name="otp" placeholder="Enter 6-digit OTP" required maxlength="6" style="padding:12px; border-radius:8px; border:none; width:100%; margin-bottom:15px; text-align:center; font-size:18px; font-weight:bold;">
-                        <button type="submit" style="background:#2563eb; color:white; padding:12px; border:none; border-radius:8px; cursor:pointer; width:100%; font-weight:bold;">Verify Account</button>
-                    </form>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Verify Access | NaviyaDew</title>
+                    <script src="https://cdn.tailwindcss.com"></script>
+                    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+                    <style>
+                        body { font-family: 'Poppins', sans-serif; background: radial-gradient(circle at top, #1e1b4b, #020617); height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
+                        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; box-shadow: 0 12px 60px rgba(0,0,0,0.6); }
+                        .otp-input { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); color: #60a5fa; letter-spacing: 0.5rem; text-align: center; transition: all 0.3s; }
+                        .otp-input:focus { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); outline: none; }
+                    </style>
+                </head>
+                <body class="p-4">
+                    <div class="glass p-10 w-full max-w-md text-center">
+                        <h2 class="text-3xl font-bold text-white mb-2">Final Step</h2>
+                        <p class="text-slate-400 mb-8 font-light">Enter the 6-digit code sent to <br><span class="text-blue-400 font-medium">${email}</span></p>
+                        <form action="/auth/verify" method="POST" class="space-y-6">
+                            <input type="hidden" name="email" value="${email}">
+                            <input type="text" name="otp" placeholder="000000" maxlength="6" required class="otp-input w-full p-4 rounded-xl text-3xl font-bold">
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-xl font-bold shadow-lg shadow-blue-900/40 transition">
+                                Activate Account
+                            </button>
+                        </form>
+                    </div>
                 </body>
+                </html>
             `);
         });
     } catch (e) { res.send("Error: " + e.message); }
 });
 
-// 3. Verify OTP - Account එක සෑදීම
+// 3. Verify OTP
 app.post('/auth/verify', async (req, res) => {
     const { email, otp } = req.body;
     const userData = tempUsers[email];
@@ -94,41 +129,33 @@ app.post('/auth/verify', async (req, res) => {
 
             await newUser.save();
             delete tempUsers[email];
+            
+            // Success Message with Premium Feel
             res.send(`
-                <body style="background:#0f172a; color:white; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh;">
-                    <div style="text-align:center;">
-                        <h1 style="color:#10b981;">Account Verified!</h1>
-                        <p>ඔබගේ ගිණුම සාර්ථකව සාදන ලදී.</p>
-                        <a href="/" style="background:#3b82f6; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">Login Now</a>
+                <body style="background:#020617; color:white; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh;">
+                    <div style="text-align:center; background:rgba(255,255,255,0.05); padding:40px; border-radius:20px; border:1px solid #10b981;">
+                        <h1 style="color:#10b981; font-size:30px;">Verification Successful!</h1>
+                        <p style="color:#94a3b8; margin-bottom:20px;">Your account is ready for development.</p>
+                        <a href="/" style="background:#3b82f6; color:white; padding:12px 25px; text-decoration:none; border-radius:10px; font-weight:bold;">Log In Now</a>
                     </div>
                 </body>
             `);
         } catch (dbErr) { res.send("Database Error: " + dbErr.message); }
     } else {
-        res.send("<h1>Invalid or Expired OTP!</h1><a href='/'>Try Again</a>");
+        res.send("<h1>Invalid OTP!</h1><a href='/'>Try Again</a>");
     }
 });
 
-// 4. Login
+// 4. Login - Redirection with Parameters (Fixes UI Mixing)
 app.post('/auth/login', async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
         if (user && await bcrypt.compare(password, user.password)) {
-            res.send(`
-                <body style="background:#0f172a; color:white; font-family:sans-serif; padding:20px;">
-                    <div style="max-width:600px; margin:auto; background:#1e293b; padding:20px; border-radius:10px;">
-                        <h1 style="color:#3b82f6;">Welcome Back, ${user.name}!</h1>
-                        <p>ඔබගේ API Key එක පහතින් දැක්වේ:</p>
-                        <div style="background:#0f172a; padding:15px; border-radius:5px; border:1px dashed #3b82f6; font-family:monospace; font-size:18px; color:#10b981; word-break:break-all;">
-                            ${user.apiKey}
-                        </div>
-                        <p style="color:#ef4444; font-size:12px; mt-10px;">*මෙම Key එක කිසිවෙකු සමඟ බෙදා නොගන්න.</p>
-                    </div>
-                </body>
-            `);
+            // Redirect to dashboard with data in URL
+            res.redirect(`/dashboard.html?key=${user.apiKey}&name=${encodeURIComponent(user.name)}`);
         } else {
-            res.send("Invalid Email or Password! <a href='/'>Go Back</a>");
+            res.send("<h1>Invalid Login!</h1><a href='/'>Go Back</a>");
         }
     } catch (e) { res.send(e.message); }
 });

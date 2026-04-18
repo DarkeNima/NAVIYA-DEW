@@ -11,39 +11,48 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background: #020617; color: #e2e8f0; margin: 0; overflow-x: hidden; }
         .glass { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .sidebar { height: 100vh; width: 260px; position: fixed; left: 0; top: 0; border-right: 1px solid rgba(255, 255, 255, 0.05); }
-        .content { margin-left: 260px; padding: 40px; }
+        
+        /* Sidebar Basic Style */
+        .sidebar { 
+            height: 100vh; 
+            width: 260px; 
+            position: fixed; 
+            left: 0; 
+            top: 0; 
+            border-right: 1px solid rgba(255, 255, 255, 0.05); 
+            z-index: 100;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .content { margin-left: 260px; padding: 40px; transition: all 0.3s; }
+
         .api-key-box { font-family: 'JetBrains Mono', monospace; background: #0f172a; border: 1px dashed #3b82f6; }
         .nav-link:hover { background: rgba(59, 130, 246, 0.1); color: #60a5fa; }
         .dev-tag { background: linear-gradient(90deg, #3b82f6, #8b5cf6); padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-        @media (max-width: 768px) {
-    .sidebar { 
-        display: flex !important; 
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 280px;
-        z-index: 100;
-    }
-    /* Sidebar එක open වුණාම පෙන්වන class එක */
-    .sidebar.open {
-        transform: translateX(0);
-    }
-}
 
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .content { margin-left: 0; padding: 20px; }
+            .sidebar { transform: translateX(-100%); width: 280px; }
+            .sidebar.open { transform: translateX(0); }
+            .content { margin-left: 0; padding: 20px; padding-top: 80px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sidebar glass flex flex-col p-6">
-        <div class="mb-10">
-            <h1 class="text-2xl font-bold text-white tracking-tight">Naviya<span class="text-blue-500">Dew</span></h1>
-            <span class="text-[10px] text-slate-500 tracking-widest uppercase">Developer Hub v1.0</span>
+    <button onclick="toggleSidebar()" class="fixed top-5 left-5 z-[110] md:hidden bg-blue-600 p-3 rounded-xl text-white shadow-lg hover:scale-105 transition">
+        <i id="menuIcon" class="fas fa-bars text-xl"></i>
+    </button>
+
+    <div id="sidebar" class="sidebar glass flex flex-col p-6">
+        <div class="mb-10 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-white tracking-tight">Naviya<span class="text-blue-500">Dew</span></h1>
+                <span class="text-[10px] text-slate-500 tracking-widest uppercase">Developer Hub v1.0</span>
+            </div>
+            <button onclick="toggleSidebar()" class="md:hidden text-slate-400 p-2">
+                <i class="fas fa-times text-xl"></i>
+            </button>
         </div>
 
         <nav class="flex-1 space-y-2">
@@ -73,22 +82,6 @@
     </div>
 
     <div class="content">
-        <button onclick="toggleSidebar()" class="fixed top-5 left-5 z-50 md:hidden bg-blue-600 p-3 rounded-xl text-white shadow-lg">
-    <i class="fas fa-bars text-xl"></i>
-</button>
-
-<div id="sidebar" class="sidebar glass flex flex-col p-6 transition-all duration-300 -translate-x-full md:translate-x-0 z-40">
-    <div class="mb-10 flex justify-between items-center">
-        <div>
-            <h1 class="text-2xl font-bold text-white tracking-tight">Naviya<span class="text-blue-500">Dew</span></h1>
-            <span class="text-[10px] text-slate-500 tracking-widest uppercase">Developer Hub v1.0</span>
-        </div>
-        <button onclick="toggleSidebar()" class="md:hidden text-slate-400">
-            <i class="fas fa-times text-xl"></i>
-        </button>
-    </div>
-    </div>
-
         <header class="flex justify-between items-center mb-10">
             <div>
                 <h2 id="welcomeText" class="text-3xl font-bold text-white">Yo, Welcome Back! 🚀</h2>
@@ -155,23 +148,31 @@
         </footer>
     </div>
 
-    <script>,
-        // URL එකෙන් දත්ත ටික ගන්නවා
+    <script>
+        // URL Data Handling
         const urlParams = new URLSearchParams(window.location.search);
         const userName = urlParams.get('name') || 'Developer';
         const userKey = urlParams.get('key') || 'No Key Found';
 
-        // පේජ් එක ලෝඩ් වුණාම දත්ත ටික පෙන්වනවා
         window.onload = function() {
             document.getElementById('apiKey').innerText = userKey;
             document.getElementById('welcomeText').innerText = `Yo, Welcome Back, ${userName}! 🚀`;
             document.getElementById('userNavName').innerText = userName;
         };
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('-translate-x-full');
-    sidebar.classList.toggle('open');
-}
+
+        // UI Toggle Function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+            
+            // Hamburger icon එක Close icon එකට මාරු කරනවා
+            const icon = document.getElementById('menuIcon');
+            if(sidebar.classList.contains('open')) {
+                icon.classList.replace('fa-bars', 'fa-times');
+            } else {
+                icon.classList.replace('fa-times', 'fa-bars');
+            }
+        }
 
         function copyKey() {
             const key = document.getElementById('apiKey').innerText;

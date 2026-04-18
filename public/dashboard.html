@@ -155,7 +155,7 @@
         </footer>
     </div>
 
-    <script>
+    <script>,
         // URL එකෙන් දත්ත ටික ගන්නවා
         const urlParams = new URLSearchParams(window.location.search);
         const userName = urlParams.get('name') || 'Developer';
@@ -167,6 +167,11 @@
             document.getElementById('welcomeText').innerText = `Yo, Welcome Back, ${userName}! 🚀`;
             document.getElementById('userNavName').innerText = userName;
         };
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('-translate-x-full');
+    sidebar.classList.toggle('open');
+}
 
         function copyKey() {
             const key = document.getElementById('apiKey').innerText;

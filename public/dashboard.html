@@ -5,28 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NaviyaDew | Developer Console</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    // URL එකෙන් දත්ත ටික ගන්නවා
-    const urlParams = new URLSearchParams(window.location.search);
-    const userName = urlParams.get('name') || 'Developer';
-    const apiKey = urlParams.get('key') || 'No Key Found';
-
-    // පේජ් එකේ අදාළ තැන්වලට දත්ත දානවා
-    document.getElementById('apiKey').innerText = apiKey;
-    document.querySelector('h2').innerText = `Yo, Welcome Back, ${userName}! 🚀`;
-    document.querySelector('.sidebar p.text-sm').innerText = userName;
-
-    function copyKey() {
-        const key = document.getElementById('apiKey').innerText;
-        navigator.clipboard.writeText(key);
-        alert("API Key copied to clipboard! Keep it secret. 🔒");
-    }
-
-    function logout() {
-        window.location.href = '/'; // ආපහු ලොගින් පේජ් එකට
-    }
-</script>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
@@ -72,8 +50,8 @@
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center font-bold text-white">N</div>
                 <div>
-                    <p class="text-sm font-semibold text-white">Navidu</p>
-                    <p class="text-[10px] text-slate-500">Lead Developer</p>
+                    <p id="userNavName" class="text-sm font-semibold text-white">Loading...</p>
+                    <p class="text-[10px] text-slate-500 uppercase tracking-tighter">Lead Developer</p>
                 </div>
             </div>
         </div>
@@ -82,10 +60,10 @@
     <div class="content">
         <header class="flex justify-between items-center mb-10">
             <div>
-                <h2 class="text-3xl font-bold text-white">Yo, Welcome Back! 🚀</h2>
+                <h2 id="welcomeText" class="text-3xl font-bold text-white">Yo, Welcome Back! 🚀</h2>
                 <p class="text-slate-400">Managing your API ecosystem from Horana, SL.</p>
             </div>
-            <button class="bg-red-500/10 text-red-500 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-500/20 transition">
+            <button onclick="logout()" class="bg-red-500/10 text-red-500 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-500/20 transition">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </button>
         </header>
@@ -100,7 +78,7 @@
                     <span class="dev-tag">Active</span>
                 </div>
                 <div class="api-key-box p-4 rounded-xl flex justify-between items-center">
-                    <span id="apiKey" class="text-blue-400 break-all mr-4">nv_live_8923hds9238hds923hds</span>
+                    <span id="apiKey" class="text-blue-400 break-all mr-4">••••••••••••••••</span>
                     <button onclick="copyKey()" class="text-slate-500 hover:text-white transition">
                         <i class="fas fa-copy text-lg"></i>
                     </button>
@@ -135,7 +113,7 @@
                     <tr class="border-b border-slate-800/50">
                         <td class="p-4">API Key Generated</td>
                         <td class="p-4"><span class="text-blue-500">● Info</span></td>
-                        <td class="p-4">2 hours ago</td>
+                        <td class="p-4">Verified</td>
                     </tr>
                 </tbody>
             </table>
@@ -143,19 +121,30 @@
 
         <footer class="mt-20 text-center text-slate-600 text-sm">
             <p>© 2026 <span class="text-slate-400">NaviyaDew Ecosystem</span>. Designed & Developed by Naviya.</p>
-            <div class="flex justify-center gap-6 mt-4">
-                <a href="#" class="hover:text-blue-400 transition"><i class="fab fa-telegram"></i></a>
-                <a href="#" class="hover:text-white transition"><i class="fab fa-github"></i></a>
-                <a href="#" class="hover:text-red-400 transition"><i class="fab fa-youtube"></i></a>
-            </div>
         </footer>
     </div>
 
     <script>
+        // URL එකෙන් දත්ත ටික ගන්නවා
+        const urlParams = new URLSearchParams(window.location.search);
+        const userName = urlParams.get('name') || 'Developer';
+        const userKey = urlParams.get('key') || 'No Key Found';
+
+        // පේජ් එක ලෝඩ් වුණාම දත්ත ටික පෙන්වනවා
+        window.onload = function() {
+            document.getElementById('apiKey').innerText = userKey;
+            document.getElementById('welcomeText').innerText = `Yo, Welcome Back, ${userName}! 🚀`;
+            document.getElementById('userNavName').innerText = userName;
+        };
+
         function copyKey() {
             const key = document.getElementById('apiKey').innerText;
             navigator.clipboard.writeText(key);
             alert("API Key copied to clipboard! Keep it secret. 🔒");
+        }
+
+        function logout() {
+            window.location.href = '/'; 
         }
     </script>
 </body>

@@ -186,6 +186,82 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// =============================================
+// 4. USER LOGIN (WITH DASHBOARD REDIRECT)
+// =============================================
+app.post('/auth/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // 1. Database එකෙන් User හොයන්න
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).send(`
+                <script>alert('Invalid email or password'); window.location.href='/';</script>
+            `);
+        }
+
+        // 2. Password Check කරන්න
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).send(`
+                <script>alert('Invalid email or password'); window.location.href='/';</script>
+            `);
+        }
+
+        // 3. (Optional) Email Verified ද කියලා Check කරන්න
+        if (!user.isVerified) {
+            return res.status(403).send(`
+                <script>alert('Please verify your email first. Check your inbox!'); window.location.href='/';</script>
+            `);
+        }
+
+        // 4. Login Success -> Dashboard එකට Redirect කරන්න (Query Params සමඟ)
+        const redirectUrl = `/dashboard.html?name=${encodeURIComponent(user.name)}&key=${user.apiKey}`;
+        res.redirect(redirectUrl);
+
+    } catch (error) {
+        console.error('Login Error:', error);
+        res.status(500).send(`<script>alert('Server error. Try again later.'); window.location.href='/';</script>`);
+    }
+});
+
+// =============================================
+// 5. SIGNUP SUCCESS HANDLING (IMPROVED)
+// =============================================
+// පහත code එකෙන් Signup වෙලා OTP Verify වෙන Page එකට Redirect වෙනවා.
+// ඔයාගේ දැනට තියෙන Signup Endpoint එකට අලුතෙන් Response එකක් දාන්න.
+app.post('/auth/signup', async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+
+        // ... (ඔයාගේ පරණ Signup Logic එක මෙතනට Copy කරන්න) ...
+        // User Create කරලා OTP Save කරපු පස්සේ:
+
+        // Email එකට OTP යවනවා.
+        // ඊට පස්සේ Redirect කරන්න OTP Verify Page එකට.
+        // ඔයාට verify-otp.html කියලා Page එකක් හදන්න පුළුවන්, නැත්නම් index.html එකේම OTP Form එක Show කරන්න පුළුවන්.
+        // දැනට අපි Simple Alert එකක් දාලා Redirect කරමු (Frontend Enhance කරන්න පුළුවන්).
+        
+        res.send(`
+            <script>
+                alert('Signup successful! Check your email for OTP.');
+                window.location.href = '/verify.html?email=${encodeURIComponent(email)}';
+            </script>
+        `);
+        // NOTE: ඔයාට verify.html Page එකක් හදන්න වෙනවා. එහෙමත් නැත්නම් index.html එක Modify කරලා OTP Form එක Show කරන්න.
+
+    } catch (error) {
+        // Error handling...
+    }
+});
+
+// =============================================
+// 6. LOGOUT ENDPOINT (DASHBOARD එකෙන් එන Logout Button එකට)
+// =============================================
+app.get('/logout', (req, res) => {
+    res.redirect('/');
+});
 // 4. Resend OTP (Optional)
 app.post('/api/resend-otp', async (req, res) => {
   try {
